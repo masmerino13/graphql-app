@@ -1,0 +1,22 @@
+{
+  "name": "react-next",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "next": "^7.0.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  },
+  "dependencies": {
+    "styled-components": "^4.1.2"
+  }
+}
