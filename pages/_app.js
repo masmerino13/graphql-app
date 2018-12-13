@@ -1,6 +1,6 @@
 import React from 'react'
 import App, { Container } from 'next/app'
-import Page from '../components/layout/Template'
+import Page from '../src/components/layout/Template'
 import withData from '../lib/withData'
 import { ApolloProvider } from 'react-apollo'
 

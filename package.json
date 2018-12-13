@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.6.2",
+    "@material-ui/icons": "^3.0.1",
     "apollo-boost": "^0.1.22",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Links from '../components/Links'
+import Links from '../src/components/Links'
 
 const Index = () => (
     <div>
