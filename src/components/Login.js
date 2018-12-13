@@ -8,8 +8,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { debug } from 'util';
-//import { AUTH_TOKEN } from '../constants'
+import lStorage from 'localStorage'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
+import { AUTH_TOKEN, AUTH_USER } from '../constants'
+import UserInfo from './containers/UserInfo'
 
 const styles = theme => ({
   main: {
@@ -45,7 +48,7 @@ const styles = theme => ({
 
 class Login extends Component {
   state = {
-    login: true,
+    login: lStorage.getItem(AUTH_TOKEN) ? true : false,
     email: '',
     password: '',
     name: ''
@@ -57,48 +60,73 @@ class Login extends Component {
     this.setState({[name]: value});
   }
 
-  _confirm = async (e) => {
-    e.preventDefault();
-    console.log('just confirm');
+  _confirm = async ({login}) => {
+    this._saveUserData(login);
   }
 
-  _saveUserData = token => {
-    localStorage.setItem(AUTH_TOKEN, token);
+  _saveUserData = ({token, user}) => {
+    this.setState({login: true});
+    lStorage.setItem(AUTH_TOKEN, token);
+    lStorage.setItem(AUTH_USER, JSON.stringify(user));
   }
 
   render() {
     const { login, email, password, name } = this.state;
     const { classes } = this.props;
+    const LOGIN_MUTATION = gql`
+      mutation LOGIN_MUTATION($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+          token,
+          user {
+            id
+            name
+            email
+          }
+        }
+      }
+    `;
 
     return  (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
-          </Avatar>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Correo electronico</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.onHandleChange} />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Contraseña</InputLabel>
-              <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.onHandleChange} />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={this._confirm}
-            >
-              Iniciar sesion
-            </Button>
-          </form>
-        </Paper>
-      </main>
+      <div>
+        {
+          login ? <UserInfo /> : <main className={classes.main}>
+            <CssBaseline />
+            <Paper className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                <LockIcon />
+              </Avatar>
+              <form className={classes.form}>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="email">Correo electronico</InputLabel>
+                  <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.onHandleChange} />
+                </FormControl>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="password">Contraseña</InputLabel>
+                  <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.onHandleChange} />
+                </FormControl>
+                <Mutation
+                  mutation={LOGIN_MUTATION}
+                  variables={{email, password}}
+                  onCompleted={data => this._confirm(data)}>
+                    {
+                      mutation => (
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          onClick={mutation}
+                        >
+                          Iniciar sesion
+                        </Button>
+                      )
+                    }
+                </Mutation>
+              </form>
+            </Paper>
+          </main>
+        }
+      </div>
       )
   }
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import { ApolloProvider } from 'react-apollo'
 import Page from '../src/components/layout/Template'
 import withData from '../lib/withData'
-import { ApolloProvider } from 'react-apollo'
 
 class MyApp extends App {
     static async getInitialProps({ Component, ctx }) {
