@@ -2,6 +2,20 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import Router from 'next/router'
+import NProgress from 'nprogress';
+
+Router.onRouteChangeStart = () => {
+    NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+    NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+    NProgress.done();
+};
 
 const TopBar = styled.div`
     background-color: #08034e;
