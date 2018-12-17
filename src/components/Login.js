@@ -66,8 +66,6 @@ class Login extends Component {
 
   _saveUserData = ({token, user}) => {
     this.setState({login: true});
-    lStorage.setItem(AUTH_TOKEN, token);
-    lStorage.setItem(AUTH_USER, JSON.stringify(user));
   }
 
   render() {
@@ -89,7 +87,7 @@ class Login extends Component {
     return  (
       <div>
         {
-          login ? <UserInfo /> : <main className={classes.main}>
+          login ? <div>Welcome</div> : <main className={classes.main}>
             <CssBaseline />
             <Paper className={classes.paper}>
               <Avatar className={classes.avatar}>
