@@ -3,11 +3,11 @@ import Medicines from './Medicines'
 
 class Profile extends Component {
     render() {
-        const { name } = this.props.user;
+        const { name, medicines } = this.props.user;
         return (
             <div>
                 <p>Hola { name }</p>
-                <Medicines />
+                <Medicines medicines={medicines} />
             </div>
         )
     }
