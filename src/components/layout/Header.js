@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Router from 'next/router'
-import NProgress from 'nprogress';
+import NProgress from 'nprogress'
+import User from '../User'
 
 Router.onRouteChangeStart = () => {
     NProgress.start();
@@ -34,6 +35,10 @@ const TopBar = styled.div`
             color: white;
         }
     }
+    .user-signin {
+        color: white;
+        font-size: 12px;
+    }
 `;
 
 const Header = () => (
@@ -43,14 +48,29 @@ const Header = () => (
                 <Typography variant="h6" color="inherit">MEDICIA</Typography>
             </Link>
         </div>
-        <div className="user-menu">
-            <Link href="/signup">
-                <Button color="inherit">Registrate</Button>
-            </Link>
-            <Link href="/login">
-                <Button color="inherit">Ingresar</Button>
-            </Link>
-        </div>
+        
+            <User>
+                {
+                    ({data: { me }}) => (
+                        me ? <div className="user-signin">
+                                <Link href="/profile">
+                                    <Button color="inherit">Bienvenid@, {me.name}</Button>
+                                </Link>                                
+                            </div> : (
+                            <div className="user-menu">
+                                <Link href="/signup">
+                                    <Button color="inherit">Registrate</Button>
+                                </Link>
+                                <Link href="/login">
+                                    <Button color="inherit">Ingresar</Button>
+                                </Link>
+                            </div>
+                        )
+                    )
+                }
+            </User>
+            
+        
     </TopBar>
 )
 

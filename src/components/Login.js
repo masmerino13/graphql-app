@@ -13,6 +13,7 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { AUTH_TOKEN, AUTH_USER } from '../constants'
 import UserInfo from './containers/UserInfo'
+import {CURRENT_USER_QUERY} from './User'
 
 const styles = theme => ({
   main: {
@@ -105,15 +106,16 @@ class Login extends Component {
                 <Mutation
                   mutation={LOGIN_MUTATION}
                   variables={{email, password}}
-                  onCompleted={data => this._confirm(data)}>
+                  onCompleted={data => this._confirm(data)}
+                  refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
                     {
-                      mutation => (
+                      signin => (
                         <Button
                           fullWidth
                           variant="contained"
                           color="primary"
                           className={classes.submit}
-                          onClick={mutation}
+                          onClick={signin}
                         >
                           Iniciar sesion
                         </Button>
